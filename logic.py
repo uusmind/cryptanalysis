@@ -1,3 +1,6 @@
+from dialog import *
+
+
 # method 1 for numeric Polybius square cript
 # and other methods for any text encripting
 def get_list(cript, method=1):
@@ -52,20 +55,30 @@ def alphabet_freq(alphabet):
         afile = 'freq_tables/eng27.csv'
     return get_real_freq(afile)
 
-def decrypt(decr_type,crypt,freq, real_freq):
-    decryption=crypt
-    if decr_type==1:
-        for tup in freq:
-            decryption=crypt.replace(tup[0], real_freq[freq.index(tup)][0].lower())
-            crypt=decryption
-        return decryption
-    else:
-        for tup in freq:
-            print('input a symbol to replace {} or type ''end'' to exit'.format(tup[0]))
-            symb=input()
-            if symb=='end':
-                return decryption
-            decryption=crypt.replace(tup[0],symb.lower())
-            crypt=decryption
-            print('now encryption is:\n{}'.format(decryption))
-        return decryption
+    
+def list_to_str(l):
+    res = ''
+    for i in l:
+        res += i
+    return res
+
+def decrypt_(decr_type,crypt_,freq, real_freq):
+    crypt = get_list(crypt_)
+    for tup in freq:
+        print('input a symbol to replace {} or type ''end'' to exit'.format(tup[0]))
+        symb=input().lower()
+        if symb=='end':
+            return list_to_str(crypt)
+        if symb=='re':
+            print_table_2(freq, real_freq)
+            print('\n{}\n'.format(crypt_))
+            return decrypt_(decr_type,crypt_,freq, real_freq)
+        crypt = replacer_by_yasha(crypt, (tup[0],symb))
+        print('now encryption is:\n{}'.format(list_to_str(crypt)))
+    return list_to_str(crypt)
+
+def replacer_by_yasha(l, tup_to_change):
+    for i, v in enumerate(l):
+        if v==tup_to_change[0]:
+            l[i] = tup_to_change[1]
+    return l

@@ -29,6 +29,11 @@ def print_table(freq, real_freq):
     for tup in freq:
         print('{0} --  {1}'.format(tup[0], real_freq[freq.index(tup)][0]))
 
+def print_table_2(freq, real_freq):
+    print("cypt frequency | real frequency")
+    for tup in freq:
+        print('{0} -- {1}  |  {2} -- {3}'.format(tup[0], tup[1], real_freq[freq.index(tup)][0], real_freq[freq.index(tup)][1]))
+
 def input_variant():
     print ('''\nchoose your variant of input:
 1. message encrypted with a Polybius square (by digits)
