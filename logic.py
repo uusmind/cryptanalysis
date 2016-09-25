@@ -55,7 +55,7 @@ def alphabet_freq(alphabet):
         afile = 'freq_tables/eng27.csv'
     return get_real_freq(afile)
 
-    
+
 def list_to_str(l):
     res = ''
     for i in l:
@@ -63,18 +63,37 @@ def list_to_str(l):
     return res
 
 def decrypt_(decr_type,crypt_,freq, real_freq):
-    crypt = get_list(crypt_)
-    for tup in freq:
-        print('input a symbol to replace {} or type ''end'' to exit'.format(tup[0]))
-        symb=input().lower()
-        if symb=='end':
-            return list_to_str(crypt)
-        if symb=='re':
-            print_table_2(freq, real_freq)
-            print('\n{}\n'.format(crypt_))
-            return decrypt_(decr_type,crypt_,freq, real_freq)
-        crypt = replacer_by_yasha(crypt, (tup[0],symb))
-        print('now encryption is:\n{}'.format(list_to_str(crypt)))
+    crypt = crypt_.copy()
+    rep_stack=[]
+    if decr_type == 2:
+        i=0
+        while len(freq)!=0:
+            print('''input a symbol to replace {} or type:
+"pr" to go to prev step
+"re" to restart
+"end" to exit'''.format(freq[i][0]))
+            symb=input().lower()
+            if symb=='end':
+                return list_to_str(crypt)
+            elif symb=='re':
+                print_table_2(freq, real_freq)
+                return decrypt_(decr_type,crypt_,freq, real_freq)
+            elif symb=='pr':
+                try:
+                    crypt=replacer_by_yasha(crypt,rep_stack.pop())
+                    i-=1
+                except Exception:
+                    print('Cannot move to previous step!')
+            elif len(symb)==1:
+                crypt = replacer_by_yasha(crypt, (freq[i][0],symb))
+                rep_stack.append((symb,freq[i]  [0]))
+                i+=1
+            else:
+                print('Enter one symbol!')
+            print('now encryption is:\n{}'.format(list_to_str(crypt)))
+    elif decr_type==1:
+        for tup in freq:
+            crypt=replacer_by_yasha(crypt,(tup[0], real_freq[freq.index(tup)][0].lower()))
     return list_to_str(crypt)
 
 def replacer_by_yasha(l, tup_to_change):
