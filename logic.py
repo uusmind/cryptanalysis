@@ -92,8 +92,19 @@ def decrypt_(decr_type,crypt_,freq, real_freq):
                 print('Enter one symbol!')
             print('now encryption is:\n{}'.format(list_to_str(crypt)))
     elif decr_type==1:
-        for tup in freq:
-            crypt=replacer_by_yasha(crypt,(tup[0], real_freq[freq.index(tup)][0].lower()))
+        #if isinstance(crypt[0], int):
+        try:
+            int(crypt[0])
+            for tup in freq:
+                crypt=replacer_by_yasha(crypt,(tup[0], real_freq[freq.index(tup)][0].lower()))
+        except Exception:
+            alphabet=get_alphabet(real_freq)
+            #crypt=text+shift => text=crypt - shift
+            shift=alphabet.index(freq[0][0])-alphabet.index(real_freq[0][0])
+            print('probably shift is {}'.format(shift))
+            for tup in freq:
+                index=(alphabet.index(tup[0])-shift)%len(alphabet)
+                crypt=replacer_by_yasha(crypt,(tup[0], alphabet[index].lower()))
     return list_to_str(crypt)
 
 def replacer_by_yasha(l, tup_to_change):
@@ -101,3 +112,15 @@ def replacer_by_yasha(l, tup_to_change):
         if v==tup_to_change[0]:
             l[i] = tup_to_change[1]
     return l
+
+def get_alphabet(tuples):
+    res=[]
+    for tup in tuples:
+        res.append(tup[0])
+    try:
+#VELOSIPED
+        res=sorted(res, key=str.lower)
+        res.remove('-')
+        res.append('-')
+    finally:
+        return  res
