@@ -34,13 +34,13 @@ def get_freq(cript):
     kv = sorted(kv,key=lambda x:(-x[1],x[0]))
     return kv
 
+#Parse alphabet frequency file
 def get_real_freq(alphabet_file_name):
     import csv
     a = []
     with open(alphabet_file_name) as f:
         reader = csv.reader(f)
         for row in reader:
-            #a.append((row[0].decode("utf8").upper(), float(row[1])))
             a.append((row[0].upper(), float(row[1])))
         return sorted(a,key=lambda x:(-x[1],x[0]))
 
@@ -92,7 +92,6 @@ def decrypt_(decr_type,crypt_,freq, real_freq):
                 print('Enter one symbol!')
             print('now encryption is:\n{}'.format(list_to_str(crypt)))
     elif decr_type==1:
-        #if isinstance(crypt[0], int):
         try:
             int(crypt[0])
             for tup in freq:
@@ -118,7 +117,6 @@ def get_alphabet(tuples):
     for tup in tuples:
         res.append(tup[0])
     try:
-#VELOSIPED
         res=sorted(res, key=str.lower)
         res.remove('-')
         res.append('-')
